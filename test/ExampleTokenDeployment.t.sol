@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import {Test, console, stdStorage, StdStorage} from "forge-std/Test.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
-import {DeployExampleToken} from "../script/DeployExampleToken.s.sol";
-import {ExampleToken} from "../src/ExampleToken.sol";
+import { Test, console, stdStorage, StdStorage } from "forge-std/Test.sol";
+import { StdCheats } from "forge-std/StdCheats.sol";
+import { DeployExampleToken } from "../script/DeployExampleToken.s.sol";
+import { ExampleToken } from "../src/ExampleToken.sol";
 
 contract ExampleTokenDeployment is Test {
     using stdStorage for StdStorage;

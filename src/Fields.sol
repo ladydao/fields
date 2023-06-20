@@ -135,7 +135,7 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
      * @dev Withdrawal address is hardcoded to be the owner address
      */
     function withdrawAll() public onlyOwner {
-        (bool success,) = payable(owner()).call{value: address(this).balance}("");
+        (bool success,) = payable(owner()).call{ value: address(this).balance }("");
         require(success);
     }
 
@@ -176,7 +176,12 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         return super.tokenURI(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable, ERC721URIStorage) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721, ERC721Enumerable, ERC721URIStorage)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 
@@ -184,7 +189,12 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         return "ipfs://";
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize)
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId,
+        uint256 batchSize
+    )
         internal
         override(ERC721, ERC721Enumerable)
     {

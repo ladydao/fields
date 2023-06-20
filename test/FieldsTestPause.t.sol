@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import {Test, console, stdStorage, StdStorage} from "forge-std/Test.sol";
-import {IERC721Receiver} from "openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol";
-import {StdCheats} from "forge-std/StdCheats.sol";
-import {DeployFields} from "../script/DeployFields.s.sol";
-import {Fields} from "../src/Fields.sol";
+import { Test, console, stdStorage, StdStorage } from "forge-std/Test.sol";
+import { IERC721Receiver } from "openzeppelin-contracts/contracts/token/ERC721/IERC721Receiver.sol";
+import { StdCheats } from "forge-std/StdCheats.sol";
+import { DeployFields } from "../script/DeployFields.s.sol";
+import { Fields } from "../src/Fields.sol";
 
 contract PauseTest is Test {
     using stdStorage for StdStorage;
@@ -52,7 +52,7 @@ contract PauseTest is Test {
         vm.prank(address(1));
         vm.deal(address(1), 1 ether);
         vm.expectRevert(Fields.MintNotActive.selector);
-        fields.safeMint{value: 0.1 ether}("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4");
+        fields.safeMint{ value: 0.1 ether }("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4");
     }
 
     function testPauseNotAbleToAddAssets() public {
