@@ -29,19 +29,13 @@ contract DeploymentTest is Test {
     }
 
     function testDeployCollectionIsForSale() public {
-        bytes32 uriHash1 =
-            bytes32(keccak256(abi.encodePacked("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4")));
-        bytes32 uriHash2 =
-            bytes32(keccak256(abi.encodePacked("bafkreidl6rlm5rqgn3b5b7b5tg4hfas7ansnk3e36agcncwijd5tupqwp4")));
-        bytes32 uriHash3 =
-            bytes32(keccak256(abi.encodePacked("bafkreibigzbpgnymvz4prm325ukcvm6nunkh767r7zewn7isaz6jnuopbi")));
+        bytes32 uriHash1 = bytes32(keccak256(abi.encodePacked("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4")));
+        bytes32 uriHash2 = bytes32(keccak256(abi.encodePacked("bafkreidl6rlm5rqgn3b5b7b5tg4hfas7ansnk3e36agcncwijd5tupqwp4")));
+        bytes32 uriHash3 = bytes32(keccak256(abi.encodePacked("bafkreibigzbpgnymvz4prm325ukcvm6nunkh767r7zewn7isaz6jnuopbi")));
 
-        uint256 isForSaleSelector1 =
-            stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash1).find();
-        uint256 isForSaleSelector2 =
-            stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash2).find();
-        uint256 isForSaleSelector3 =
-            stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash3).find();
+        uint256 isForSaleSelector1 = stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash1).find();
+        uint256 isForSaleSelector2 = stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash2).find();
+        uint256 isForSaleSelector3 = stdstore.target(address(fields)).sig(fields.isForSale.selector).with_key(uriHash3).find();
 
         uint256 isForSale1 = uint256(vm.load(address(fields), bytes32(isForSaleSelector1)));
         assertEq(isForSale1, 1);
