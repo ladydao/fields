@@ -3,6 +3,7 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## Build Commands
+
 - Build: `forge build`
 - Test: `forge test`
 - Test single file: `forge test --match-path test/Fields__Mint.t.sol`
@@ -12,10 +13,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - Clean: `yarn clean`
 
 ## Code Style Guidelines
+
 - Solidity version: 0.8.19
 - Imports: Organize imports by functionality/type
 - Error handling: Use custom errors instead of require with strings
-- Formatting: 
+- Formatting:
   - Line length: 120 characters
   - Bracket spacing: true
   - Tab width: 4 spaces
