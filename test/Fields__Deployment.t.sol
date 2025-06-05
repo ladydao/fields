@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.19;
 
-import { Test, console, stdStorage, StdStorage } from "forge-std/Test.sol";
-import { StdCheats } from "forge-std/StdCheats.sol";
+import { Test, stdStorage, StdStorage } from "forge-std/Test.sol";
 import { DeployFields } from "../script/DeployFields.s.sol";
 import { Fields } from "../src/Fields.sol";
 
@@ -56,7 +55,7 @@ contract DeploymentTest is Test {
         vm.deal(address(1), 1 ether);
         fields.safeMint{ value: 0.1 ether }("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4");
 
-        string memory EXPECTED_TOKEN_URI = "ipfs://bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4";
-        assert(keccak256(abi.encodePacked(fields.tokenURI(1))) == keccak256(abi.encodePacked((EXPECTED_TOKEN_URI))));
+        string memory expectedTokenUri = "ipfs://bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4";
+        assert(keccak256(abi.encodePacked(fields.tokenURI(1))) == keccak256(abi.encodePacked((expectedTokenUri))));
     }
 }
