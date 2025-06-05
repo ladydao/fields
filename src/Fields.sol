@@ -22,7 +22,6 @@ import "openzeppelin-contracts/contracts/access/Ownable.sol";
  * @notice It allows the owner to add more assets later but only up to the supply limit.
  * @dev Inherits from ERC721, ERC721Enumerable, ERC721URIStorage, and Ownable.
  */
-
 contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     ///////////////
     // Errors    //

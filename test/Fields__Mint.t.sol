@@ -71,7 +71,8 @@ contract MintTest is Test {
         vm.startPrank(address(1));
         vm.deal(address(1), 1 ether);
         fields.safeMint{ value: 0.1 ether }(nftCid1);
-        uint256 slotBalance = stdstore.target(address(fields)).sig(fields.balanceOf.selector).with_key(address(1)).find();
+        uint256 slotBalance =
+            stdstore.target(address(fields)).sig(fields.balanceOf.selector).with_key(address(1)).find();
 
         uint256 balanceFirstMint = uint256(vm.load(address(fields), bytes32(slotBalance)));
         assertEq(balanceFirstMint, 1);
@@ -98,17 +99,20 @@ contract MintTest is Test {
         vm.prank(address(receiver));
         vm.deal(address(receiver), 1 ether);
         fields.safeMint{ value: 0.1 ether }(nftCid1);
-        uint256 receiverBalance = stdstore.target(address(fields)).sig(fields.balanceOf.selector).with_key(address(receiver)).find();
+        uint256 receiverBalance =
+            stdstore.target(address(fields)).sig(fields.balanceOf.selector).with_key(address(receiver)).find();
 
         uint256 balance = uint256(vm.load(address(fields), bytes32(receiverBalance)));
         assertEq(balance, 1);
     }
 
-    function testFailMintUnSafeContractReceiver() public {
-        vm.prank(address(1));
-        vm.deal(address(1), 1 ether);
-        vm.etch(address(1), bytes("mock code"));
+    function testMintRevertWhenUnsafeContractReceiver() public {
+        address unsafeContract = address(0x123);
+        vm.prank(unsafeContract);
+        vm.deal(unsafeContract, 1 ether);
+        vm.etch(unsafeContract, bytes("mock code"));
 
+        vm.expectRevert();
         fields.safeMint{ value: 0.1 ether }(nftCid1);
     }
 }

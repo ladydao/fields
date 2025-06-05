@@ -64,13 +64,14 @@ contract WithdrawTest is Test {
         assertEq(exampleToken.balanceOf(address(fields)), 0);
     }
 
-    function testFailWithdrawERC20NotAsOwner() public {
+    function testWithdrawERC20RevertWhenNotOwner() public {
         vm.prank(user1);
         exampleToken.transfer(address(fields), 1 ether);
 
         assertEq(exampleToken.balanceOf(address(fields)), 1 ether);
 
         vm.prank(user2);
+        vm.expectRevert("Ownable: caller is not the owner");
         fields.withdrawAllERC20(exampleToken);
 
         assertEq(exampleToken.balanceOf(address(fields)), 1 ether);
