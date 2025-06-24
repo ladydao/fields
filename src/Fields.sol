@@ -6,6 +6,8 @@ import { IERC20 } from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol"
 import { ERC721Enumerable } from "openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import { ERC721URIStorage } from "openzeppelin-contracts/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
+import { Counters } from "openzeppelin-contracts/contracts/utils/Counters.sol";
+import { Address } from "openzeppelin-contracts/contracts/utils/Address.sol";
 
 /**
  * ███████╗██╗███████╗██╗░░░░░██████╗░░██████╗
@@ -23,6 +25,8 @@ import { Ownable } from "openzeppelin-contracts/contracts/access/Ownable.sol";
  * @dev Inherits from ERC721, ERC721Enumerable, ERC721URIStorage, and Ownable.
  */
 contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
+    using Counters for Counters.Counter;
+
     ///////////////
     // Errors    //
     ///////////////
@@ -40,6 +44,7 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     uint256 public collectionSize;
     bool public mintActive = true;
     mapping(bytes32 assetHash => bool forSaleStatus) public isForSale;
+    Counters.Counter private _tokenIds;
 
     ///////////////
     // Events    //
@@ -110,8 +115,8 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
         }
         isForSale[uriHash] = false;
 
-        uint256 current = totalSupply();
-        uint256 newTokenID = ++current;
+        uint256 newTokenID = _tokenIds.current();
+        _tokenIds.increment();
 
         _safeMint(msg.sender, newTokenID);
         _setTokenURI(newTokenID, uri);
@@ -129,13 +134,22 @@ contract Fields is ERC721, ERC721Enumerable, ERC721URIStorage, Ownable {
     }
 
     /**
+     * @notice Burns a token
+     * @dev Only the owner of the token can burn it
+     * @param tokenId The ID of the token to be burned
+     */
+    function burn(uint256 tokenId) public {
+        require(_isApprovedOrOwner(msg.sender, tokenId), "ERC721: caller is not token owner or approved");
+        _burn(tokenId);
+    }
+
+    /**
      * @notice Withdraws all Ether held by the contract
      * @dev Only the owner can withdraw the Ether
      * @dev Withdrawal address is hardcoded to be the owner address
      */
     function withdrawAll() public onlyOwner {
-        (bool success,) = payable(owner()).call{ value: address(this).balance }("");
-        require(success, "Withdrawal failed");
+        Address.sendValue(payable(owner()), address(this).balance);
     }
 
     /**
