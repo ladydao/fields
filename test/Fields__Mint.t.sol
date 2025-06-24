@@ -49,11 +49,11 @@ contract MintTest is Test {
     function testMintNewOwnerRegistered() public {
         vm.prank(address(1));
         vm.deal(address(1), 1 ether);
-        fields.safeMint{ value: 0.1 ether }(nftCid1);
-        uint256 slotOfNewOwner = stdstore.target(address(fields)).sig(fields.ownerOf.selector).with_key(1).find();
+        uint256 mintedTokenId = fields.safeMint{ value: 0.1 ether }(nftCid1);
 
-        uint160 ownerOfTokenIdOne = uint160(uint256((vm.load(address(fields), bytes32(abi.encode(slotOfNewOwner))))));
-        assertEq(address(ownerOfTokenIdOne), address(1));
+        // Check the owner using the public view function, not stdStorage
+        address owner = fields.ownerOf(mintedTokenId);
+        assertEq(owner, address(1), "Owner of the new token is incorrect");
     }
 
     function testMintIdIncreasesOnMinting() public {
@@ -69,17 +69,19 @@ contract MintTest is Test {
     function testMintBalanceIncremented() public {
         vm.startPrank(address(1));
         vm.deal(address(1), 1 ether);
+
+        // Check balance before minting
+        assertEq(fields.balanceOf(address(1)), 0);
+
+        // First mint
         fields.safeMint{ value: 0.1 ether }(nftCid1);
-        uint256 slotBalance =
-            stdstore.target(address(fields)).sig(fields.balanceOf.selector).with_key(address(1)).find();
+        assertEq(fields.balanceOf(address(1)), 1, "Balance after first mint is incorrect");
 
-        uint256 balanceFirstMint = uint256(vm.load(address(fields), bytes32(slotBalance)));
-        assertEq(balanceFirstMint, 1);
-
+        // Second mint
         fields.safeMint{ value: 0.1 ether }(nftCid2);
-        uint256 balanceSecondMint = uint256(vm.load(address(fields), bytes32(slotBalance)));
+        assertEq(fields.balanceOf(address(1)), 2, "Balance after second mint is incorrect");
+
         vm.stopPrank();
-        assertEq(balanceSecondMint, 2);
     }
 
     function testMintEmitEvent() public {

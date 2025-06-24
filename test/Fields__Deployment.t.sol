@@ -53,9 +53,12 @@ contract DeploymentTest is Test {
     function testDeployCorrectBaseURI() public {
         vm.prank(address(1));
         vm.deal(address(1), 1 ether);
-        fields.safeMint{ value: 0.1 ether }("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4");
+        uint256 mintedTokenId =
+            fields.safeMint{ value: 0.1 ether }("bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4");
 
+        // The _baseURI is "ipfs://", so the tokenURI should be "ipfs://<CID>"
+        // We check against the token ID that was actually minted (which is 0)
         string memory expectedTokenUri = "ipfs://bafkreidcapki3wfwy356um7wvwiud4cpnrucnuumtlw6g3fjx6eswynlx4";
-        assert(keccak256(abi.encodePacked(fields.tokenURI(1))) == keccak256(abi.encodePacked((expectedTokenUri))));
+        assertEq(fields.tokenURI(mintedTokenId), expectedTokenUri, "Token URI is incorrect");
     }
 }
