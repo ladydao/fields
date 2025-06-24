@@ -15,3 +15,5 @@ yarn.lock
 !broadcast
 broadcast/*
 broadcast/*/31337/
+prompt
+dev_deployment_plan.md
