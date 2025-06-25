@@ -10,6 +10,8 @@ out
 .pnp.*
 lcov.info
 yarn.lock
+.anvil.pid
+.contract-address
 
 # broadcasts
 !broadcast
